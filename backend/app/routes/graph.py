@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from neo4j.exceptions import ServiceUnavailable
 
 from app.models.schemas import GraphResponse, QueryRequest
 from app.services.neo4j_service import neo4j_service
@@ -22,15 +23,18 @@ def graph_query(payload: QueryRequest) -> GraphResponse:
 
 @router.get("/schema")
 def schema() -> dict:
-    labels = neo4j_service.run_table(
-        "CALL db.labels() YIELD label RETURN label ORDER BY label"
-    )
-    rels = neo4j_service.run_table(
-        "CALL db.relationshipTypes() YIELD relationshipType RETURN relationshipType ORDER BY relationshipType"
-    )
-    props = neo4j_service.run_table(
-        "CALL db.propertyKeys() YIELD propertyKey RETURN propertyKey ORDER BY propertyKey"
-    )
+    try:
+        labels = neo4j_service.run_table(
+            "CALL db.labels() YIELD label RETURN label ORDER BY label"
+        )
+        rels = neo4j_service.run_table(
+            "CALL db.relationshipTypes() YIELD relationshipType RETURN relationshipType ORDER BY relationshipType"
+        )
+        props = neo4j_service.run_table(
+            "CALL db.propertyKeys() YIELD propertyKey RETURN propertyKey ORDER BY propertyKey"
+        )
+    except ServiceUnavailable:
+        return {"labels": [], "relationshipTypes": [], "propertyKeys": []}
 
     return {
         "labels": [row["label"] for row in labels],

@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+from neo4j.exceptions import ServiceUnavailable
+
 from app.services.neo4j_service import neo4j_service
 
 
 class AgentService:
     def draft_cypher(self, prompt: str) -> tuple[str, str]:
-        schema = neo4j_service.run_table(
-            "CALL db.labels() YIELD label RETURN collect(label) AS labels"
-        )
-        labels = schema[0]["labels"] if schema else []
+        labels: list[str] = []
+        try:
+            schema = neo4j_service.run_table(
+                "CALL db.labels() YIELD label RETURN collect(label) AS labels"
+            )
+            labels = schema[0]["labels"] if schema else []
+        except ServiceUnavailable:
+            labels = []
 
         prompt_lower = prompt.lower()
         if "call" in prompt_lower or "dependency" in prompt_lower:
