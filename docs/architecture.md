@@ -10,7 +10,7 @@ It is intentionally split into a thin React client and a backend that owns all N
 
 ## System components
 
-### Frontend (apps/web)
+### Frontend (frontend)
 
 - Framework: React + Vite
 - API client: Axios with base URL http://localhost:8000
@@ -19,7 +19,7 @@ It is intentionally split into a thin React client and a backend that owns all N
 	- QueryPanel: Cypher editor and run trigger
 	- GraphPanel: graph visualization using react-force-graph
 
-### Backend (apps/api)
+### Backend (backend)
 
 - Framework: FastAPI
 - Routes:

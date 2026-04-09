@@ -24,8 +24,8 @@ FastAPI + React app for exploring a Neo4j graph in two ways:
 
 ## Project structure
 
-- `apps/api` — FastAPI backend + Neo4j services
-- `apps/web` — React + Vite frontend
+- `backend` — FastAPI backend + Neo4j services
+- `frontend` — React + Vite frontend
 - `docs` — architecture notes
 
 ---
@@ -34,7 +34,7 @@ FastAPI + React app for exploring a Neo4j graph in two ways:
 
 ### 0) Process startup
 
-#### Backend startup (`apps/api/app/main.py`)
+#### Backend startup (`backend/app/main.py`)
 1. FastAPI app starts with a lifespan hook.
 2. On startup, `neo4j_service.verify()` runs immediately.
 	- If Neo4j is unreachable/invalid, startup fails.
@@ -42,7 +42,7 @@ FastAPI + React app for exploring a Neo4j graph in two ways:
 4. Routers are mounted: `/health`, `/graph`, `/chat`.
 5. On shutdown, `neo4j_service.close()` closes the Neo4j driver.
 
-#### Frontend startup (`apps/web/src/main.tsx`, `App.tsx`)
+#### Frontend startup (`frontend/src/main.tsx`, `App.tsx`)
 1. React mounts `App`.
 2. `App` initializes state:
 	- default Cypher: `MATCH (n)-[r]-(m) RETURN n, r, m LIMIT 100`
@@ -177,7 +177,7 @@ FastAPI + React app for exploring a Neo4j graph in two ways:
 
 ## Configuration
 
-Backend settings (`apps/api/app/config.py`) come from environment / `.env`:
+Backend settings (`backend/app/config.py`) come from environment / `.env`:
 
 - `neo4j_uri` (default: `bolt://localhost:7687`)
 - `neo4j_user` (default: `neo4j`)
@@ -193,7 +193,7 @@ Backend settings (`apps/api/app/config.py`) come from environment / `.env`:
 
 ### Backend
 ```powershell
-cd apps/api
+cd backend
 python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
@@ -202,7 +202,7 @@ uvicorn app.main:app --reload --port 8000
 
 ### Frontend
 ```powershell
-cd apps/web
+cd frontend
 npm install
 npm run dev
 ```
