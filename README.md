@@ -28,6 +28,8 @@ FastAPI + React app for exploring a Neo4j graph in two ways:
 - `frontend` — React + Vite frontend
 - `docs` — architecture notes
 
+Use `backend` and `frontend` for all local run commands and VS Code tasks.
+
 ---
 
 ## Full flow (exact runtime behavior)
@@ -221,6 +223,8 @@ From repo root:
 This opens two PowerShell windows:
 - backend: creates venv, installs requirements, runs uvicorn
 - frontend: installs npm packages, runs Vite dev server
+
+It uses [backend/run_backend.ps1](backend/run_backend.ps1) and [frontend/run_frontend.ps1](frontend/run_frontend.ps1).
 
 ---
 
